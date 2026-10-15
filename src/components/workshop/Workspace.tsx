@@ -33,8 +33,8 @@ export function Workspace() {
           </span>
           <div className="min-w-0">
             <h1 className="flex min-w-0 items-baseline gap-2">
-              <span className="truncate text-base font-semibold tracking-tight">聲音鍛造實驗室</span>
-              <span className="shrink-0 font-mono text-[11px] font-medium tracking-wide text-faint">ToneLab</span>
+              <span className="truncate text-lg">聲音鍛造實驗室</span>
+              <span className="brand-en shrink-0 text-sm text-muted">ToneLab</span>
             </h1>
           </div>
         </div>
@@ -55,7 +55,7 @@ export function Workspace() {
           音色庫
         </MobileTab>
         <MobileTab active={panel === "builder"} onClick={() => setPanel("builder")}>
-          配置{selectedCount ? ` ${selectedCount}` : ""}
+          配置{selectedCount ? <span className="numeric"> {selectedCount}</span> : null}
         </MobileTab>
         <MobileTab active={panel === "output"} onClick={() => setPanel("output")}>
           輸出

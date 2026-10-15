@@ -145,7 +145,13 @@ function authPopupPlugin(): Plugin {
 // `0.0.0.0:8080` is the live-preview contract — don't change host/port.
 // The dev server starts once `src/router.tsx` and `src/routes/` exist — see
 // AGENTS.md § "First scaffold".
+// GitHub project Pages lives at /tonelab/. That base must not leak into the
+// preview or the Vercel build, so it is opt-in via GITHUB_PAGES=1.
+const githubPages = process.env.GITHUB_PAGES === "1";
+const pagesBase = "/tonelab/";
+
 export default defineConfig(({ command, isPreview }) => ({
+  base: githubPages ? pagesBase : "/",
   server: {
     host: "0.0.0.0",
     port: 8080,
@@ -166,17 +172,32 @@ export default defineConfig(({ command, isPreview }) => ({
     // PWA head + ?install=1 tutorial page; runs before Start/Nitro.
     grokPwaPlugin(),
     tailwindcss(),
-    tanstackStart(),
+    tanstackStart(
+      githubPages
+        ? {
+            spa: {
+              enabled: true,
+              prerender: {
+                enabled: true,
+                crawlLinks: false,
+              },
+            },
+            router: { basepath: "/tonelab" },
+          }
+        : undefined,
+    ),
     ...(command === "build" || isPreview
-      ? [
-          nitro({
-            preset: "vercel",
-            // Auto-registers server/middleware/* (the PWA install page +
-            // manifest + head-tag middleware). Nitro v3 defaults serverDir to
-            // false, so removing this silently unwires /?install=1 on deploys.
-            serverDir: "./server",
-          }),
-        ]
+      ? githubPages
+        ? []
+        : [
+            nitro({
+              preset: "vercel",
+              // Auto-registers server/middleware/* (the PWA install page +
+              // manifest + head-tag middleware). Nitro v3 defaults serverDir to
+              // false, so removing this silently unwires /?install=1 on deploys.
+              serverDir: "./server",
+            }),
+          ]
       : []),
     viteReact(),
   ],

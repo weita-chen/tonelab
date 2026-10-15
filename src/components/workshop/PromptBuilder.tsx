@@ -6,7 +6,7 @@ import { buildPrompt } from "@/lib/prompt/engine";
 import { detectConflicts } from "@/lib/prompt/conflicts";
 import { useWorkshop } from "@/lib/store";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
+import { cn, latinFace } from "@/lib/utils";
 import { WarningList } from "./WarningList";
 
 export function PromptBuilder() {
@@ -33,8 +33,8 @@ export function PromptBuilder() {
     <section className="flex h-full min-h-0 flex-col bg-bg">
       <header className="flex items-center justify-between gap-2 border-b border-line px-3 py-3">
         <div>
-          <h2 className="text-sm font-semibold">配置台</h2>
-          <p className="text-xs text-faint">點選即加入，順序由系統決定</p>
+          <h2 className="text-base">配置台</h2>
+          <p className="text-sm text-muted">點選即加入，順序由系統決定</p>
         </div>
         <Button
           variant="ghost"
@@ -67,7 +67,7 @@ export function PromptBuilder() {
         <WarningList warnings={warnings} />
         {concepts.length === 0 ? (
           <div className="rounded-md border border-dashed border-line px-4 py-8">
-            <p className="text-base font-medium">開始組裝你的聲音。</p>
+            <p className="text-lg font-bold leading-snug">開始組裝你的聲音。</p>
             <p className="mt-2 max-w-md text-sm leading-relaxed text-muted">
               從音色庫點選流派、情緒、質感或樂器，不必照順序。第一個流派會成為主流派，其餘流派視為影響。
             </p>
@@ -76,9 +76,9 @@ export function PromptBuilder() {
           <div className="flex flex-col gap-4">
             {groups.map((group) => (
               <section key={group.id}>
-                <h3 className="mb-2 text-xs tracking-wide text-faint">
+                <h3 className="mb-2 text-sm text-muted">
                   {group.zh}
-                  <span className="ml-2 font-mono normal-case">{group.en}</span>
+                  <span className="font-en ml-2 font-medium tracking-[-0.02em]">{group.en}</span>
                 </h3>
                 <ul className="flex flex-col gap-2">
                   {group.items.map((concept) => {
@@ -96,16 +96,16 @@ export function PromptBuilder() {
                         <div className="flex items-start justify-between gap-2">
                           <div>
                             <div className="flex flex-wrap items-center gap-2">
-                              <span className="text-sm font-medium">{concept.name}</span>
+                              <span className={cn("text-base font-medium", latinFace(concept))}>{concept.name}</span>
                               {isPrimary && (
-                                <span className="inline-flex items-center gap-1 text-xs">
+                                <span className="inline-flex items-center gap-1 text-sm">
                                   <Star className="size-3 fill-current" aria-hidden />
                                   主流派
                                 </span>
                               )}
-                              {isInfluence && <span className={cn("text-xs", isPrimary ? "text-ink" : "text-accent")}>影響</span>}
+                              {isInfluence && <span className={cn("text-sm", isPrimary ? "text-ink" : "text-accent")}>影響</span>}
                             </div>
-                            <p className={cn("text-xs", isPrimary ? "text-ink/80" : "text-muted")}>{concept.nameZh}</p>
+                            <p className={cn("text-sm", isPrimary ? "text-ink/80" : "text-muted")}>{concept.nameZh}</p>
                           </div>
                           <button
                             type="button"
@@ -120,12 +120,16 @@ export function PromptBuilder() {
                           {concept.descriptionZh}
                         </p>
                         {because && (
-                          <p className="mt-1 text-xs text-faint">輸出時會併入較具體的 {because.name}，不會重複。</p>
+                          <p className="mt-1 text-sm text-muted">
+                            輸出時會併入較具體的{" "}
+                            <span className={cn("font-medium", latinFace(because))}>{because.name}</span>
+                            ，不會重複。
+                          </p>
                         )}
                         {!isPrimary && concept.category === "genre" && (
                           <button
                             type="button"
-                            className="mt-2 text-xs text-accent underline-offset-2 hover:underline"
+                            className="mt-2 text-sm text-accent underline-offset-2 hover:underline"
                             onClick={() => setPrimary(concept.id)}
                           >
                             設為主流派

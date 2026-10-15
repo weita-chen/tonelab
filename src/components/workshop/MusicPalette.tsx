@@ -4,7 +4,7 @@ import { childrenOf, orderedGenres, rootGenreId, searchConcepts, topLevel } from
 import { CATEGORIES, FAMILIES, categoryMeta, type CategoryId, type Concept, type GenreFamily } from "@/lib/music/types";
 import { useWorkshop } from "@/lib/store";
 import { getConcept } from "@/lib/music";
-import { cn } from "@/lib/utils";
+import { cn, latinFace } from "@/lib/utils";
 
 export function MusicPalette() {
   const [category, setCategory] = useState<CategoryId>("genre");
@@ -21,8 +21,10 @@ export function MusicPalette() {
     <section className="flex h-full min-h-0 flex-col bg-surface">
       <header className="border-b border-line px-3 py-3">
         <div className="flex items-baseline justify-between gap-2">
-          <h2 className="text-sm font-semibold">音色庫</h2>
-          <span className="text-xs text-faint">已選 {selectedIds.length}</span>
+          <h2 className="text-base">音色庫</h2>
+          <span className="text-sm text-muted">
+            已選 <span className="numeric">{selectedIds.length}</span>
+          </span>
         </div>
         <label className="mt-2 flex min-h-11 items-center gap-2 rounded-md border border-line bg-bg px-2">
           <Search className="size-4 shrink-0 text-faint" aria-hidden />
@@ -30,7 +32,7 @@ export function MusicPalette() {
             value={query}
             onChange={(event) => setQuery(event.target.value)}
             placeholder="搜尋 Jazz、薩克斯、溫暖…"
-            className="w-full bg-transparent text-base text-fg outline-none placeholder:text-faint lg:text-sm"
+            className="w-full bg-transparent text-base text-fg outline-none placeholder:text-muted"
           />
           {query && (
             <button type="button" className="text-faint hover:text-fg" onClick={() => setQuery("")} aria-label="清除搜尋">
@@ -42,7 +44,9 @@ export function MusicPalette() {
 
       {query.trim() ? (
         <div className="scroll-thin min-h-0 flex-1 overflow-y-auto px-3 py-3">
-          <p className="mb-2 text-xs text-faint">搜尋全庫 · {results.length} 筆</p>
+          <p className="mb-2 text-sm text-muted">
+            搜尋全庫 · <span className="numeric">{results.length}</span> 筆
+          </p>
           {results.length === 0 ? (
             <p className="text-sm text-muted">沒有符合「{query.trim()}」的概念。</p>
           ) : (
@@ -132,7 +136,7 @@ function FilterChip({ active, onClick, children }: { active: boolean; onClick: (
       type="button"
       onClick={onClick}
       className={cn(
-        "min-h-11 rounded-md px-3 text-xs",
+        "min-h-11 rounded-md px-3 text-sm",
         active ? "bg-raised text-fg ring-1 ring-accent" : "text-muted hover:bg-raised",
       )}
     >
@@ -198,8 +202,8 @@ function MiniChip({ concept, selected }: { concept: Concept; selected: boolean }
         selected ? "border-accent bg-raised" : "border-line bg-bg hover:border-muted",
       )}
     >
-      <span className="block text-xs font-medium text-fg">{concept.name}</span>
-      <span className="block text-xs text-faint">{concept.nameZh}</span>
+      <span className={cn("block text-sm font-medium text-fg", latinFace(concept))}>{concept.name}</span>
+      <span className="block text-sm text-muted">{concept.nameZh}</span>
     </button>
   );
 }
@@ -229,17 +233,17 @@ function ConceptButton({
     >
       <span className="flex items-start justify-between gap-2">
         <span>
-          <span className="block text-sm font-medium text-fg">{concept.name}</span>
-          <span className="block text-xs text-muted">{concept.nameZh}</span>
+          <span className={cn("block text-base font-medium text-fg", latinFace(concept))}>{concept.name}</span>
+          <span className="block text-sm text-muted">{concept.nameZh}</span>
         </span>
         <span className="flex shrink-0 flex-col items-end gap-1">
-          {showCategory && <span className="text-xs text-faint">{categoryMeta(concept.category).zh}</span>}
-          {affinity && <span className="text-xs text-accent">契合</span>}
-          {selected && <span className="text-xs text-accent">已加入</span>}
+          {showCategory && <span className="text-sm text-muted">{categoryMeta(concept.category).zh}</span>}
+          {affinity && <span className="text-sm text-accent">契合</span>}
+          {selected && <span className="text-sm text-accent">已加入</span>}
         </span>
       </span>
-      <span className="mt-1 block text-xs leading-relaxed text-faint">{concept.descriptionZh}</span>
-      {parent && showCategory && <span className="mt-1 block text-xs text-faint">屬於 {parent.nameZh}</span>}
+      <span className="mt-1 block text-sm leading-relaxed text-muted">{concept.descriptionZh}</span>
+      {parent && showCategory && <span className="mt-1 block text-sm text-muted">屬於 {parent.nameZh}</span>}
     </button>
   );
 }

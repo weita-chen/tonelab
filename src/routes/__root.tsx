@@ -4,6 +4,7 @@ import { PreviewHostBridge } from "@/components/preview-host-bridge";
 import appCss from "../styles.css?url";
 
 const APP_NAME = "聲音鍛造實驗室";
+const BASE = import.meta.env.BASE_URL || "/";
 
 export const Route = createRootRoute({
   head: () => ({
@@ -18,16 +19,16 @@ export const Route = createRootRoute({
       { name: "theme-color", content: "#0e1114" },
     ],
     links: [
-      { rel: "icon", type: "image/svg+xml", href: "/favicon.svg" },
+      { rel: "icon", type: "image/svg+xml", href: `${BASE}favicon.svg` },
       { rel: "preconnect", href: "https://fonts.googleapis.com" },
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "anonymous" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600&family=Noto+Sans+TC:wght@400;500;600&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;600;700;800&display=swap",
       },
       { rel: "stylesheet", href: appCss },
-      { rel: "manifest", href: "/__grok/manifest.webmanifest" },
-      { rel: "apple-touch-icon", href: "/__grok/icon-180.png" },
+      { rel: "manifest", href: `${BASE}__grok/manifest.webmanifest` },
+      { rel: "apple-touch-icon", href: `${BASE}__grok/icon-180.png` },
     ],
   }),
   component: () => (

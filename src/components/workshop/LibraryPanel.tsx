@@ -78,8 +78,8 @@ function HistoryList({ onClose }: { onClose: () => void }) {
     <ul className="flex flex-col gap-2">
       {history.map((entry) => (
         <li key={entry.id} className="rounded-md border border-line bg-bg p-3">
-          <p className="text-xs text-faint">{formatTime(entry.timestamp)}</p>
-          <p className="mt-1 line-clamp-3 font-mono text-xs leading-relaxed text-fg">{entry.prompt}</p>
+          <p className="numeric text-sm text-muted">{formatTime(entry.timestamp)}</p>
+          <p className="font-en mt-1 line-clamp-3 text-sm leading-relaxed tracking-[-0.02em] text-fg">{entry.prompt}</p>
           <div className="mt-2 flex flex-wrap gap-2">
             <Button
               size="sm"
@@ -151,7 +151,7 @@ function FavoriteList({ onClose }: { onClose: () => void }) {
           setError("");
         }}
       >
-        <label className="text-xs text-faint" htmlFor="favorite-name">
+        <label className="text-sm text-muted" htmlFor="favorite-name">
           把目前配置存成範本
         </label>
         <input
@@ -159,7 +159,7 @@ function FavoriteList({ onClose }: { onClose: () => void }) {
           value={name}
           onChange={(event) => setName(event.target.value)}
           placeholder="例如 Rainy Tokyo Jazz"
-          className="min-h-11 rounded-md border border-line bg-bg px-3 text-base text-fg outline-none placeholder:text-faint lg:text-sm"
+          className="font-en min-h-11 rounded-md border border-line bg-bg px-3 text-base tracking-[-0.02em] text-fg outline-none placeholder:text-muted"
         />
         <div className="flex flex-wrap gap-2">
           <Button type="submit" variant="primary" size="sm">
@@ -171,7 +171,7 @@ function FavoriteList({ onClose }: { onClose: () => void }) {
             </Button>
           )}
         </div>
-        {error && <p className="text-xs text-warn">{error}</p>}
+        {error && <p className="text-sm text-warn">{error}</p>}
       </form>
       {favorites.length === 0 ? (
         <p className="text-sm leading-relaxed text-muted">還沒有範本。存下來的配置只留在這台裝置。</p>
@@ -191,7 +191,7 @@ function FavoriteList({ onClose }: { onClose: () => void }) {
                   <input
                     value={draft}
                     onChange={(event) => setDraft(event.target.value)}
-                    className="min-h-11 flex-1 rounded-md border border-line bg-surface px-2 text-sm"
+                    className="font-en min-h-11 flex-1 rounded-md border border-line bg-surface px-2 text-base tracking-[-0.02em]"
                     aria-label="範本名稱"
                   />
                   <Button type="submit" size="sm" variant="primary">
@@ -200,8 +200,12 @@ function FavoriteList({ onClose }: { onClose: () => void }) {
                 </form>
               ) : (
                 <>
-                  <p className="text-sm font-medium">{favorite.name}</p>
-                  <p className="text-xs text-faint">{formatTime(favorite.updatedAt)} · {favorite.selectedIds.length} 個概念</p>
+                  <p className="font-en text-base font-medium tracking-[-0.02em]">{favorite.name}</p>
+                  <p className="text-sm text-muted">
+                    <span className="numeric">{formatTime(favorite.updatedAt)}</span>
+                    {" · "}
+                    <span className="numeric">{favorite.selectedIds.length}</span> 個概念
+                  </p>
                 </>
               )}
               <div className="mt-2 flex flex-wrap gap-2">
